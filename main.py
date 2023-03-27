@@ -23,7 +23,6 @@ def main():
     for keys, values in max_p.items():
         photo_url = values
         disk_file_path = f"/{path_to_folder}/{keys}"
-        uploader.get_link_to_disk(disk_file_path)
         uploader.upload_files_to_disk(disk_file_path, photo_url)
         time.sleep(0.5)
         prog_bar.update(1)

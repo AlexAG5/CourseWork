@@ -7,7 +7,7 @@ class YaUploader:
         self.token = token
 
     def get_headers(self):
-        return {"Content-Type": "application/json",
+        return {"Accept": "application/json",
                 "Authorization": f"OAuth {self.token}"}
 
     def get_folder(self, path_folder):
@@ -21,18 +21,11 @@ class YaUploader:
             if response.status_code == 409:
                 print(f'Папка {path_folder} уже существует! Введите другое название.')
 
-    def get_link_to_disk(self, disk_file_path):
+    def upload_files_to_disk(self, path_folder, photo_url):
         upload_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
         headers = self.get_headers()
-        params = {"path": disk_file_path, "overwrite": "true"}
-        response = requests.get(upload_url, headers=headers, params=params)
-        return response.json()
-
-    def upload_files_to_disk(self, disk_file_path, photo_url):
-        href = self.get_link_to_disk(disk_file_path).get("href", "")
-        headers = self.get_headers()
-        params = {"url": photo_url}
-        response = requests.post(href, params=params, headers=headers)
+        upload_params = {'path': path_folder, 'url': photo_url}
+        response = requests.post(url=upload_url, params=upload_params, headers=headers)
         response.raise_for_status()
         if response.status_code == 201:
             print('Загрузка файла(-ов) завершена')

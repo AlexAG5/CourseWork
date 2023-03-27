@@ -6,7 +6,7 @@ import json
 class VkPhotos:
     url = "http://api.vk.com/method/"
 
-    def __init__(self, vk_token: str, version: float, owner_id, count=5):
+    def __init__(self, vk_token: str, version: float, owner_id, count):
         self.params = {"access_token": vk_token,
                        "v": version,
                        "owner_id": owner_id,
