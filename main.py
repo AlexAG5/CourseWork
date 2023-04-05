@@ -4,14 +4,16 @@ from tqdm import tqdm
 
 from VK import VkPhotos
 from Yandex import YaUploader
-
-with open("token.txt", "r") as file_object:
-    vk_token = file_object.read().strip()
+import configparser
+import GetID
 
 
 def main():
-    token = input("Введите токен Яндекс.Диска: ")
-    owner_id = input("Введите VK id: ")
+    config = configparser.ConfigParser()
+    config.read("settings.ini")
+    vk_token = config["VK"]["vk_token"]
+    token = config["Yandex"]["token"]
+    owner_id = GetID.get_owner_id()
     photo_count = int(input("Введите количество фотографий: "))
     path_to_folder = input("Введите имя папки на Яндекс.Диске: ")
     vk_version = 5.131
