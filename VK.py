@@ -38,10 +38,6 @@ class VkPhotos:
         for items in photos:
             url = str(items["sizes"][-1]["url"])
             url_list.append(url)
-            photos_dict = {
-            "name": str(items["likes"]["count"]),
-            "url": str(items["sizes"][-1]["url"]),
-            "size": items['sizes'][-1]['type']}
 
         for i in range(len(sorted_likes)):
             key = sorted_likes[i]
