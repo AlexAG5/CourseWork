@@ -23,9 +23,30 @@ class VkPhotos:
 
     def parse_size_photo(self):
         photos = self.search_photo_profile()
-        max_size = {(str(items["likes"]["count"]) + "_" + time.strftime('%Y-%m-%d', time.gmtime(items["date"]))):
-                    items["sizes"][-1]["url"] for items in photos}
-        print(max_size)
+        url_list = []
+        sorted_likes = []
+        max_size = {}
+
+        for items in photos:
+            like = str(items["likes"]["count"])
+            if like != like:
+                sorted_likes.append(like)
+            elif like == like in sorted_likes:
+                like = str(items['likes']['count']) + "_" + time.strftime('%Y-%m-%d', time.gmtime(items["date"]))
+            sorted_likes.append(like)
+
+        for items in photos:
+            url = str(items["sizes"][-1]["url"])
+            url_list.append(url)
+            photos_dict = {
+            "name": str(items["likes"]["count"]),
+            "url": str(items["sizes"][-1]["url"]),
+            "size": items['sizes'][-1]['type']}
+
+        for i in range(len(sorted_likes)):
+            key = sorted_likes[i]
+            value = url_list[i]
+            max_size[key] = value
         return max_size
 
     def get_photo_json(self):
@@ -33,8 +54,9 @@ class VkPhotos:
         photos_list = []
         for items in all_photos:
             photos_dict = {
-                "file_name": (str(items['likes']['count']) + "_" + time.strftime('%Y-%m-%d', time.gmtime(items["date"]))+'.jpg'),
-                "size": items['sizes'][-1]['type'], "url": items['sizes'][-1]['url']}
+                "name": str(items["likes"]["count"]),
+                "url": str(items["sizes"][-1]["url"]),
+                "size": items['sizes'][-1]['type']}
             photos_list.append(photos_dict)
         import_photos = json.dumps(photos_list, indent=4)
         with open("import_photos.json", "w") as file:
