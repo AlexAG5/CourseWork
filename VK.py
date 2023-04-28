@@ -50,7 +50,7 @@ class VkPhotos:
         photos_list = []
         for items in all_photos:
             photos_dict = {
-                "name": str(items["likes"]["count"]),
+                "name": (str(items['likes']['count']) + "_" + time.strftime('%Y-%m-%d', time.gmtime(items["date"])) + '.jpg'),
                 "url": str(items["sizes"][-1]["url"]),
                 "size": items['sizes'][-1]['type']}
             photos_list.append(photos_dict)
