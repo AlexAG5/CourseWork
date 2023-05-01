@@ -47,14 +47,38 @@ class VkPhotos:
 
     def get_photo_json(self):
         all_photos = self.search_photo_profile()
-        photos_list = []
+        sorted_likes = []
+        url_list = []
+        size_list = []
+
         for items in all_photos:
+            like = str(items["likes"]["count"])
+            if like != like:
+                sorted_likes.append(like)
+            elif like == like in sorted_likes:
+                like = str(items['likes']['count']) + "_" + time.strftime('%Y-%m-%d', time.gmtime(items["date"]))
+            sorted_likes.append(like)
+
+        for items in all_photos:
+            url = str(items["sizes"][-1]["url"])
+            url_list.append(url)
+
+        for items in all_photos:
+            size = items['sizes'][-1]['type']
+            size_list.append(size)
+        photos_names = {"names": list(map(lambda u: u, sorted_likes))}
+        url_dict = {"url": list(map(lambda u: u, url_list))}
+        size_dict = {"size": list(map(lambda u: u, size_list))}
+        merged_dict = {**photos_names, **url_dict, **size_dict}
+        photos_list = []
+
+        for items in merged_dict:
             photos_dict = {
-                "name": (str(items['likes']['count']) + "_" + time.strftime('%Y-%m-%d', time.gmtime(items["date"])) + '.jpg'),
-                "url": str(items["sizes"][-1]["url"]),
-                "size": items['sizes'][-1]['type']}
+                "name": merged_dict.get('names'),
+                "url": merged_dict.get('url'),
+                "size": merged_dict.get('size')}
             photos_list.append(photos_dict)
-        import_photos = json.dumps(photos_list, indent=4)
+        import_photos = json.dumps(merged_dict, indent=4)
         with open("import_photos.json", "w") as file:
             file.write(import_photos)
         print('Информация о фото записана в import_photos.json')
